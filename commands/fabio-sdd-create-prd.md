@@ -59,6 +59,9 @@ Create a file called `PRD.md` in the current directory with:
 ## Dependencies & Constraints
 [What this change depends on, limitations discovered]
 
+## Rollback Plan
+[How to revert the change if it doesn't work as expected. Include specific steps to undo, what to verify after rollback, and any fallback approaches]
+
 ## Open Questions
 [Anything that needs clarification before planning]
 ```
