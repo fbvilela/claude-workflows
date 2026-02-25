@@ -1,0 +1,77 @@
+<a href="/" class="back-link">&larr; Back</a>
+
+<% if @flash %>
+  <div class="flash <%= @flash[:type] %>">
+    <% if @flash[:type] == "success" %>&#x2705;<% end %>
+    <%= h(@flash[:message]) %>
+  </div>
+<% end %>
+
+<div class="card">
+  <div class="app-detail-header">
+    <h2><%= h(@app[:name]) %></h2>
+    <span class="url"><%= h(@app[:url]) %></span>
+  </div>
+
+  <div class="current-info">
+    <div class="label">Currently pointing to</div>
+    <div class="value">
+      <%= h(@app[:target]) %>
+      <% if @app[:branch] %>
+        <span class="branch">[<%= h(@app[:branch]) %>]</span>
+      <% end %>
+    </div>
+  </div>
+
+  <% if !@app[:symlink] %>
+    <div class="no-switch-msg">
+      This app is a real directory (not a symlink). Worktree switching is not available.
+    </div>
+  <% elsif @worktrees.empty? %>
+    <div class="no-switch-msg">
+      No git worktrees found for this app.
+    </div>
+  <% else %>
+    <form action="/apps/<%= h(@app[:name]) %>/switch" method="post">
+      <div class="card-header">Worktrees</div>
+      <div class="worktree-list">
+        <% @worktrees.each do |wt| %>
+          <div class="worktree-row <%= wt[:active] ? 'active' : '' %>">
+            <input type="radio" name="worktree_path" value="<%= h(wt[:path]) %>"
+              <%= wt[:active] ? 'checked' : '' %>>
+            <span class="check"><%= wt[:active] ? '&#x2714;' : '' %></span>
+            <span class="path"><%= h(wt[:path]) %></span>
+            <span class="branch"><%= h(wt[:branch]) %></span>
+            <% if wt[:active] %>
+              <span class="active-badge">active</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="switch-actions">
+        <button type="submit" class="btn btn-primary">Switch</button>
+      </div>
+    </form>
+  <% end %>
+</div>
+
+<script>
+  // Disable the Switch button when the already-active worktree is selected
+  (function() {
+    var form = document.querySelector('form');
+    if (!form) return;
+    var btn = form.querySelector('.btn-primary');
+    var radios = form.querySelectorAll('input[type="radio"]');
+
+    function updateBtn() {
+      var selected = form.querySelector('input[type="radio"]:checked');
+      if (selected) {
+        var row = selected.closest('.worktree-row');
+        btn.disabled = row.classList.contains('active');
+      }
+    }
+
+    radios.forEach(function(r) { r.addEventListener('change', updateBtn); });
+    updateBtn();
+  })();
+</script>

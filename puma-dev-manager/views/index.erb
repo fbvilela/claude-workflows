@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="card-header">Apps in ~/.puma-dev/</div>
+  <% if @apps.empty? %>
+    <div class="empty-state">
+      No apps found in ~/.puma-dev/
+    </div>
+  <% else %>
+    <% @apps.each do |app| %>
+      <div class="app-row">
+        <span class="dot <%= app[:symlink] ? 'symlink' : 'directory' %>">
+          <%= app[:symlink] ? '&#x25CF;' : '&#x25CB;' %>
+        </span>
+        <span class="name">
+          <a href="/apps/<%= h(app[:name]) %>"><%= h(app[:name]) %></a>
+        </span>
+        <span class="url"><%= h(app[:url]) %></span>
+        <% if app[:branch] %>
+          <span class="branch">[<%= h(app[:branch]) %>]</span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div class="legend">
+  <span><span class="dot symlink">&#x25CF;</span> symlink</span>
+  <span><span class="dot directory">&#x25CB;</span> real directory</span>
+</div>
