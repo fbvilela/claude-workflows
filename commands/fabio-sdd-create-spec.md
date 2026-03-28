@@ -12,26 +12,41 @@ Read the PRD and create a detailed spec:
 
 $ARGUMENTS
 
+## Flags
+
+Parse the input for optional flags:
+- `--auto`: Run in non-interactive mode (skip confirmation, make best-effort decisions)
+- `--output <path>`: Write spec to specified path instead of `spec.md`
+
 ## Instructions
+
+**Tool Preference:** If the Auggie MCP code retrieval tool is available, prefer using it for understanding and searching the codebase.
 
 1. **Read the PRD completely** - Understand the full context
 
-2. **Before writing the spec**, share with me:
+2. **Before writing the spec** (skip if `--auto`), share with me:
    - Your understanding of what needs to be done
    - Any open questions that need clarification
    - A proposed outline of implementation phases
 
-3. **Wait for my confirmation** before writing the full spec
+3. **Wait for my confirmation** before writing the full spec (skip if `--auto`)
 
-## CRITICAL: Interactive Process
+## Process Mode
 
-**Work back and forth with me, sharing your open questions and phases outline before writing the plan.**
+**If `--auto` flag is set (non-interactive):**
+- Make best-effort decisions on any ambiguities
+- Document all decisions in the "Auto-Mode Decisions" section (question + decision + reasoning)
+- Proceed directly to writing the full spec without confirmation
+- Note: A human will review this spec before implementation
 
-Do NOT write the full spec until I confirm the approach.
+**Otherwise (interactive mode):**
+Work back and forth with me, sharing your open questions and phases outline before writing the plan. Do NOT write the full spec until I confirm the approach.
 
 ## Spec Format
 
-Once confirmed, create `spec.md` with this structure:
+Create the spec at the path specified by `--output`, or `spec.md` in the current directory if not specified.
+
+Use this structure:
 
 ```markdown
 # Spec: [Feature/Task Name]
@@ -41,6 +56,13 @@ Once confirmed, create `spec.md` with this structure:
 
 ## What We're NOT Doing
 [Explicitly list out-of-scope items]
+
+## Auto-Mode Decisions (only if --auto)
+[If running in --auto mode: Document any ambiguities encountered and the assumptions made to proceed. Format as:
+- **Question:** [What was unclear or would normally require user input]
+- **Decision:** [What was assumed/decided and why]
+
+Otherwise omit this section.]
 
 ## Implementation Phases
 
@@ -104,11 +126,22 @@ Once confirmed, create `spec.md` with this structure:
 
 ---
 
-After creating the spec, remind the user:
+## After Creating the Spec
 
-> **Spec created at `spec.md`**
+**If `--auto` flag is set:**
+Report:
+1. The file path
+2. A 2-3 sentence summary of the proposed approach
+3. Key scope items (what IS and IS NOT being done)
+
+Do not provide next steps.
+
+**Otherwise (interactive mode):**
+Remind the user:
+
+> **Spec created at `{output_path}`**
 >
 > Next steps:
 > 1. Review the spec carefully - this is your contract
 > 2. Run `/clear` to reset context
-> 3. Run `/fabio-sdd-implement-spec spec.md` for Phase 3
+> 3. Run `/fabio-sdd-implement-spec {output_path}` for Phase 3
