@@ -156,6 +156,54 @@ Claude Code's plan mode is just a prompt that says "make a plan first." It doesn
 
 SDD does all of these by design.
 
+## Automated Code Review
+
+The `/fabio-review-prs` command automates your daily PR review queue.
+
+### Setup
+
+1. Create `~/.claude/review-repos.yaml` with the repositories you review:
+
+```yaml
+repositories:
+  - owner/repo-a
+  - owner/repo-b
+```
+
+(See `review-repos.example.yaml` for a template.)
+
+2. Install the command (same as above).
+
+### Usage
+
+```bash
+/fabio-review-prs
+```
+
+Claude will:
+1. Find all open PRs where you are a **requested reviewer**
+2. Show you a summary table and ask for confirmation
+3. Launch a **parallel sub-agent per PR** to review each one
+4. Write a detailed review report per PR to `reviews/` (gitignored)
+
+### What Gets Reviewed
+
+Each PR is analyzed for:
+
+| Category | What It Checks |
+|----------|---------------|
+| **Security** | Injection risks, auth issues, secrets, OWASP Top 10 |
+| **Reusability** | DRY violations, missed abstractions, pattern consistency |
+| **Code Quality** | Readability, error handling, edge cases, test coverage |
+
+### Output
+
+- One markdown report per PR in `reviews/` (e.g., `reviews/owner-repo-pr-42.md`)
+- Each report includes a verdict, findings, and **suggested comments** with file/line references
+- **Nothing is posted to GitHub** — you decide what to use
+
+---
+
 ## Credits
 
 Based on the methodology from:

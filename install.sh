@@ -18,6 +18,7 @@ commands=(
     "fabio-sdd-create-prd.md"
     "fabio-sdd-create-spec.md"
     "fabio-sdd-implement-spec.md"
+    "fabio-review-prs.md"
 )
 
 for cmd in "${commands[@]}"; do
@@ -29,9 +30,11 @@ echo ""
 echo "Installation complete!"
 echo ""
 echo "Available commands:"
-echo "  /fabio-sdd-create-prd   - Phase 1: Research and create PRD"
-echo "  /fabio-sdd-create-spec  - Phase 2: Create implementation spec"
+echo "  /fabio-sdd-create-prd     - Phase 1: Research and create PRD"
+echo "  /fabio-sdd-create-spec    - Phase 2: Create implementation spec"
 echo "  /fabio-sdd-implement-spec - Phase 3: Implement the spec"
+echo "  /fabio-review-prs         - Automated code review for pending PRs"
 echo ""
 echo "Get started:"
 echo "  /fabio-sdd-create-prd <github-issue-url-or-description>"
+echo "  /fabio-review-prs  (configure repos in ~/.claude/review-repos.yaml)"

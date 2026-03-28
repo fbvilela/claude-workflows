@@ -1,0 +1,8 @@
+# Configuration for /fabio-review-prs command
+# Copy this file to ~/.claude/review-repos.yaml and edit with your repositories.
+#
+# List the repositories where you want to check for PRs awaiting your review.
+
+repositories:
+  - owner/repo-name
+  - owner/another-repo
